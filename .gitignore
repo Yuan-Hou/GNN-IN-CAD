@@ -3,3 +3,4 @@ data/MFCADDataset/
 .DS_Store
 
 *.pyc
+*.egg-info/

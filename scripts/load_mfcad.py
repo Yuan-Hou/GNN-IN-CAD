@@ -12,14 +12,14 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data" / "MFCADDataset"
 
 
-def load_splits(data_dir: Path = DATA_DIR) -> dict[str, list[str]]:
+def _load_splits(data_dir: Path = DATA_DIR) -> dict[str, list[str]]:
     """Load the official train, validation, and test sample IDs."""
     split_path = data_dir / "split.json"
     with split_path.open() as file:
         return json.load(file)
 
 
-def load_sample(sample_id: str, data_dir: Path = DATA_DIR) -> dict:
+def _load_sample(sample_id: str, data_dir: Path = DATA_DIR) -> dict:
     """Load one DGL graph and its aligned per-face annotations."""
     graph_path = data_dir / "graph" / f"{sample_id}.bin"
     label_path = data_dir / "labels" / f"{sample_id}_ids.json"
@@ -49,16 +49,17 @@ def load_sample(sample_id: str, data_dir: Path = DATA_DIR) -> dict:
     }
 
 
-def load_subset(
+def load_mfcad(
     split: str = "train",
-    subset_size: int = 5,
+    head: int | None = None,
     data_dir: Path = DATA_DIR,
-) -> tuple[dict[str, list[str]], list[dict]]:
-    """Load up to ``subset_size`` samples; a negative size loads the full split."""
-    splits = load_splits(data_dir)
+) -> list[dict]:
+    """Load an MFCAD split, optionally limited to its first ``head`` samples."""
+    splits = _load_splits(data_dir)
     if split not in splits:
         raise ValueError(f"Unknown split {split!r}; choose from {tuple(splits)}")
+    if head is not None and head < 0:
+        raise ValueError("head must be non-negative or None")
 
-    sample_ids = splits[split] if subset_size < 0 else splits[split][:subset_size]
-    samples = [load_sample(sample_id, data_dir) for sample_id in sample_ids]
-    return splits, samples
+    sample_ids = splits[split] if head is None else splits[split][:head]
+    return [_load_sample(sample_id, data_dir) for sample_id in sample_ids]
