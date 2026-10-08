@@ -1,0 +1,5 @@
+data/MFCADDataset/
+
+.DS_Store
+
+*.pyc
