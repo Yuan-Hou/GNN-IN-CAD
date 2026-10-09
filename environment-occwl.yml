@@ -1,0 +1,13 @@
+name: occwl_viewer
+channels:
+  - lambouj
+  - conda-forge
+dependencies:
+  - python=3.10.8
+  - occwl=3.0.0
+  - pythonocc-core=7.5.1
+  - pythreejs=2.4.2
+  - ipykernel=7.3.0
+  - ipywidgets=8.1.9
+  - matplotlib=3.10.1
+  - networkx=3.4.2
