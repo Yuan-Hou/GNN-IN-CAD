@@ -57,3 +57,49 @@ Omit `head` to load the entire selected split.
 ```python
 train, test = load_mfcad("train"), load_mfcad("test")
 ```
+
+### Train the three UV-grid baselines
+
+The models predict one of 16 machining-feature classes for each B-rep face:
+
+| Model flag | Information passed between faces |
+| --- | --- |
+| `cnn` | None; independent surface CNN and per-face classifier |
+| `complete_gcn` | All faces of the same solid, with residual graph convolutions |
+| `adjacency_gcn` | Binary, bidirectional face adjacency, with residual graph convolutions |
+
+All models share the same surface encoder and classifier architecture. The two
+GCNs have identical parameter counts. Complete propagation uses DGL mean readout
+and broadcast, mathematically equivalent to GraphConv on a complete graph with
+self-loops. No information passes between different solids in a batch.
+GroupNorm and LayerNorm keep normalization independent of other faces and solids.
+
+The local baseline implementation has been checked with Python 3.11, PyTorch
+2.1.2, DGL 1.0.2, NumPy 1.24.3, and SciPy 1.10.1. Use CPU on Apple Silicon;
+the trainer also accepts `--device cuda` for a CUDA-enabled DGL installation.
+
+```sh
+conda activate gnn_project
+pip install -e .
+python -m unittest discover -s tests -v
+python scripts/audit_mfcad.py --output results/data_audit.json
+python scripts/overfit_baselines.py --output results/overfit.json
+
+# Quick pipeline check; these subsets are not a final benchmark.
+train-baselines --model all --epochs 5 --train-limit 256 --val-limit 64 \
+  --output results/pilot-256-seed42
+
+# Complete official splits, 20 epochs per model, test best validation-loss checkpoint.
+train-baselines --model all --epochs 20 --batch-size 16 --threads 4 --seed 42 \
+  --test --output results/full-seed42
+```
+
+Alternatively run `python scripts/train_baselines.py` with the same arguments.
+Output directories must be new, to prevent overwriting experiments. `--model all`
+runs the models sequentially with the same seeded data order. Each model directory
+contains `config.json` (including split IDs, versions and source hashes),
+`history.jsonl`, `best.pt`, and `result.json`; `summary.json` collects completed
+models. Metrics include face accuracy, dataset-level macro IoU, class IoUs, and
+the confusion matrix. Classes with zero union are excluded from macro IoU and
+reported as `null`. Test data is evaluated only after selecting the checkpoint.
+Data and training artifacts are ignored by Git.

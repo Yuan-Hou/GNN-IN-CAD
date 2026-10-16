@@ -4,3 +4,5 @@ data/MFCADDataset/
 
 *.pyc
 *.egg-info/
+
+results/

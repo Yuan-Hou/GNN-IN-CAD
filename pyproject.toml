@@ -9,4 +9,7 @@ requires-python = ">=3.11"
 
 [tool.setuptools]
 package-dir = {"" = "scripts"}
-py-modules = ["load_mfcad"]
+py-modules = ["load_mfcad", "mfcad_dataset", "models", "train_baselines", "audit_mfcad"]
+
+[project.scripts]
+train-baselines = "train_baselines:main"
