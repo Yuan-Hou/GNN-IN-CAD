@@ -7,7 +7,12 @@ from pathlib import Path
 
 from dgl.data.utils import load_graphs
 
+<<<<<<<< HEAD:src/uvnet/data/loading.py
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
+========
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+>>>>>>>> b20026f (Run models using VM):src/uvnet_project/load_mfcad.py
 DATA_DIR = PROJECT_ROOT / "data" / "MFCADDataset"
 
 

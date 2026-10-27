@@ -1,8 +1,18 @@
-## GNN-IN-CAD
+# GNN-IN-CAD
 
 Face-level machining-feature classification on MFCAD, with the UV-Net architecture and
 ablations of the information sources it consumes (surface geometry, curve geometry,
 B-rep topology).
+
+Two parallel implementations share the MFCAD dataset and environment:
+
+- [Yong Jun workflow](#yong-jun-workflow): notebook-based model ladder using `src/uvnet_project/`.
+- [YuanSen workflow](#yuansen-workflow): CLI experiments using `src/uvnet/`.
+
+Model settings, graph preprocessing, checkpoints and report formats are described
+within their respective workflows.
+
+## Shared setup
 
 ### Environment
 
@@ -45,6 +55,134 @@ bash data/download_mfcad.sh
 ```
 
 The script requires `7z` or `7zz`. On macOS, install it with `brew install p7zip` if needed.
+
+## Yong Jun workflow
+
+Run the notebooks in `notebooks/`, backed by reusable modules in
+`src/uvnet_project/`. Start with `baseline.ipynb` to train the face CNN and
+independent classifier, then run the shallow-topology and message-passing
+notebooks below. Training starts when their training cells are executed.
+
+### VM setup
+
+For teammates setting up a Linux GPU VM, see [VM_SETUP.md](VM_SETUP.md).
+Run `bash scripts/setup_vm.sh --download-data`, then
+`bash scripts/start_jupyter.sh`. These scripts do not run training.
+
+### Model notebooks and encoders
+
+`uvnet_project.edge_cnn.EdgeCNN` provides the UV-Net curve encoder:
+6 input channels → Conv1d 64 → 128 → 256 → average pooling → 64D embedding.
+Its architecture follows the [released UV-Net encoder](https://github.com/AutodeskAILab/UV-Net/blob/main/uvnet/encoders.py).
+
+`notebooks/laplacian.ipynb` implements Stage 1.5 with `training_mode="frozen"`
+(cached baseline CNN embeddings, classifier only) or `training_mode="joint"`
+(fine-tune CNN + classifier on face grids). Both concatenate per-solid
+normalized-Laplacian eigenvectors, defaulting to 8 columns, and use random
+signs per solid/eigenvector during training. No message passing is used. It requires
+`results/baseline_run_01/epoch_020/checkpoint.pt`; adjust that notebook path
+if needed. Features are cached under `data/feature_cache`, and results go
+to `results/laplacian_run_01` (frozen) or `results/laplacian_joint_run_01`
+(joint). The final comparison chart includes baseline, frozen and joint
+histories whenever available.
+
+`notebooks/graphlet.ipynb` adds per-face graphlet degree vectors, following
+Shallow Learning Lab 01's node orbits and normalization and Lab 02's
+bit-mask lookup. Set `max_graphlet_nodes=4` (15 features) or `5` (73), and
+`training_mode="frozen"` or `"joint"`. Counts are exact on simple undirected
+graphs; standardization is fitted on training faces only. Results are
+separated as `results/graphlet4_frozen_run_01`, `graphlet4_joint_run_01`,
+`graphlet5_frozen_run_01`, and `graphlet5_joint_run_01`. Comparisons include
+the geometry-only baseline and variants within the same theme. No graph-level
+SVM kernel is used for this face-classification experiment.
+
+`notebooks/wl.ipynb` adapts Shallow Learning Lab 03's 1-WL refinement to
+per-face colour histories. Set `wl_iterations=3` (rounds 0–3 by default)
+and `training_mode="frozen"` or `"joint"`. Colours start uniformly, without
+target labels; a training-only vocabulary maps unseen validation colours
+to zero-contribution unknowns. Sparse categorical projection is equivalent
+to concatenated one-hot WL features in the classifier's first linear layer.
+Results are `results/wl3_frozen_run_01` / `wl3_joint_run_01` for default
+settings. Comparisons include the baseline and WL runs only. Both modes
+support the same per-epoch seed/RNG/optimizer checkpointing.
+
+`notebooks/chebyshev.ipynb` follows Graph Convnets Lab 01's sparse Chebyshev
+recurrence for per-face classification. Choose `cheb_hops=2` or `3` and
+`training_mode="frozen"` or `"joint"`. One graph convolution at width 64,
+ReLU and a pointwise two-layer MLP keep the total graph reach at 2 or 3 hops.
+Polynomial degree is the hop count; the tutorial's K is the number of terms
+(3 or 4). Simple undirected normalized Laplacians are scaled with the bound
+lambda_max=2 and batched as sparse block diagonal matrices. No coarsening,
+pooling, eigenvectors or edge geometry are used. Results go to
+`results/cheb2_frozen_run_01` etc.; comparisons include baseline + Chebyshev
+variants only. Both modes retain epoch checkpoints, exact epoch-boundary
+RNG resume, batch loss logging and final-only prediction export.
+
+`notebooks/anisotropic.ipynb` uses Graph Convnets Lab 04/05's residual
+GatedGCN pattern, with exactly two graph layers and no global pooling.
+Run `edge_mode="static"` (curve features gate face messages), then
+`"updated"` (endpoint-conditioned gates and recurrent edge updates).
+The UV-Net EdgeCNN trains in both variants; static describes graph-layer
+state, not encoder training. `training_mode="joint"` fine-tunes FaceCNN
+by default; `"frozen"` caches baseline face embeddings while still training
+EdgeCNN. Original DGL edge IDs and curve-grid alignment are preserved,
+including parallel B-rep edges. Results are `results/anisotropic_static_joint_run_01`
+etc. Comparisons include baseline + anisotropic only. Epoch checkpoints,
+RNG resume, loss/accuracy logging and final prediction export are retained.
+
+### Load MFCAD in a notebook
+
+The editable project installation makes the loader available to notebooks without modifying `sys.path`:
+
+```python
+from uvnet_project.load_mfcad import load_mfcad
+
+samples = load_mfcad("train", head=5)
+```
+
+Omit `head` to load the entire selected split.
+
+```python
+train, test = load_mfcad("train"), load_mfcad("test")
+```
+
+### Classifier and evaluation
+
+The classifier maps face embeddings to raw logits with two linear layers
+and a ReLU between them. Both dimensions are explicit inputs:
+
+```python
+from uvnet_project.classifier import Classifier
+from uvnet_project.evaluation import evaluate
+
+classifier = Classifier(embedding_dim=64, hidden_dim=128, num_classes=16)
+# evaluation_loader yields (embedding_batch, label_batch).
+results = evaluate(classifier, evaluation_loader, "results/validation.pt")
+print(results["loss"], results["accuracy"])
+```
+
+The dimensions above are examples. This follows the paper's two-layer MLP
+description; the released UV-Net implementation uses a three-layer head with
+batch normalization and dropout instead. See
+[UV-Net Section 4.2](https://openaccess.thecvf.com/content/CVPR2021/papers/Jayaraman_UV-Net_Learning_From_Boundary_Representations_CVPR_2021_paper.pdf)
+and [the released classifier](https://github.com/AutodeskAILab/UV-Net/blob/main/uvnet/models.py).
+
+For a complete encoder-plus-classifier model, pass that model and batches of
+its inputs instead. Keep the model on the evaluation device; the evaluator
+moves inputs and labels to that device. It disables gradients and restores
+the model's previous training mode afterward.
+
+The saved dictionary contains mean cross-entropy loss per face, accuracy
+(0 to 1), a confusion matrix (true labels in rows, predictions in columns),
+and all softmax probabilities, labels, and predictions as CPU tensors.
+Rows follow loader order; use a non-shuffled loader to preserve face order.
+Load the dictionary with `torch.load("results/validation.pt", weights_only=True)`.
+
+## YuanSen workflow
+
+Use the `uvnet` package and its command-line entry points for the model
+comparisons below. This workflow defines its own graph preprocessing,
+checkpoint selection and report generation.
 
 ### Repository layout
 

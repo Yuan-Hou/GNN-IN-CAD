@@ -1,9 +1,17 @@
 __pycache__/
 data/MFCADDataset/
+data/feature_cache/
+
+# Generated model checkpoints, weights and prediction tensors.
+*.pt
+*.pth
+*.pt.tmp
+*.pth.tmp
 
 .DS_Store
 
 *.pyc
 *.egg-info/
-
 results/
+dist/
+notebook_backups/
