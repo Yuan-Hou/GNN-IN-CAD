@@ -4,12 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gnn-in-cad"
-version = "0.1.0"
+version = "0.2.0"
+description = "UV-Net style face classification on MFCAD B-rep graphs"
 requires-python = ">=3.11"
 
-[tool.setuptools]
-package-dir = {"" = "scripts"}
-py-modules = ["load_mfcad", "mfcad_dataset", "models", "train_baselines", "audit_mfcad"]
-
 [project.scripts]
-train-baselines = "train_baselines:main"
+uvnet-train = "uvnet.cli:main"
+uvnet-audit = "uvnet.audit:main"
+uvnet-overfit = "uvnet.overfit:main"
+train-baselines = "uvnet.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

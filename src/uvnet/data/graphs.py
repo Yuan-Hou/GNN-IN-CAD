@@ -1,24 +1,19 @@
-"""Training data for per-face MFCAD segmentation (CPU DGL graphs)."""
+"""Per-solid B-rep graphs, UV normalization and the MFCAD dataset."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 import dgl
+import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from load_mfcad import DATA_DIR, _load_sample, _load_splits
+from .features import graphlet_degree_vectors, laplacian_positional_encoding
+from .loading import DATA_DIR, _load_sample, _load_splits
 
 NUM_CLASSES = 16
-
-
-def adjacency_graph(graph):
-    """A separate binary, bidirectional propagation graph with one self-loop."""
-    src, dst = graph.edges()
-    result = dgl.graph((torch.cat((src, dst)), torch.cat((dst, src))),
-                       num_nodes=graph.num_nodes())
-    return dgl.add_self_loop(dgl.remove_self_loop(dgl.to_simple(result)))
+DATASET_FEATURES = ("gdv", "pe", "edge")
 
 
 def normalize_uv(face_uv, edge_uv):
@@ -42,10 +37,45 @@ def normalize_uv(face_uv, edge_uv):
     return face_uv, edge_uv
 
 
+def adjacency_graph(graph, edge_uv=None):
+    """Bidirectional B-rep face-adjacency graph with one self-loop per face.
+
+    Directed (trim-curve) edges are kept as they are, so each direction of an adjacency
+    carries its own curve grid; exact duplicates are dropped (first occurrence wins),
+    because DGL message passing would otherwise weight repeated edges more heavily.
+    ``edge_uv`` must be aligned with ``graph.edges()`` and is stored as ``edata["xs"]``;
+    self-loops get zero curve features so the ECC layer can learn a self term from them.
+    """
+    node_count = graph.num_nodes()
+    src, dst = graph.edges()
+    src, dst = src.numpy().astype(np.int64), dst.numpy().astype(np.int64)
+    keep = src != dst
+    src, dst = src[keep], dst[keep]
+    features = None
+    if edge_uv is not None:
+        if edge_uv.shape[0] != graph.num_edges():
+            raise ValueError("Curve features are not aligned with the graph edges")
+        features = edge_uv[torch.from_numpy(keep)]
+    key = src * node_count + dst
+    _, first = np.unique(key, return_index=True)
+    src, dst = src[first], dst[first]
+    if features is not None:
+        features = features[torch.from_numpy(first)]
+
+    nodes = torch.arange(node_count, dtype=torch.int64)
+    result = dgl.graph((torch.cat([torch.from_numpy(src), nodes]),
+                        torch.cat([torch.from_numpy(dst), nodes])), num_nodes=node_count)
+    if features is not None:
+        self_loops = torch.zeros(node_count, *features.shape[1:], dtype=features.dtype)
+        result.edata["xs"] = torch.cat([features, self_loops])
+    return result
+
+
 class MFCADDataset(Dataset):
     """Load on demand and cache normalized samples; no in-place augmentation."""
 
-    def __init__(self, split="train", data_dir=DATA_DIR, limit=None, sample_ids=None):
+    def __init__(self, split="train", data_dir=DATA_DIR, limit=None, sample_ids=None,
+                 features=(), pe_dim=8):
         self.data_dir = Path(data_dir)
         split = "validation" if split == "val" else split
         splits = _load_splits(self.data_dir)
@@ -53,6 +83,11 @@ class MFCADDataset(Dataset):
             raise ValueError(f"Unknown split {split!r}")
         if limit is not None and limit <= 0:
             raise ValueError("limit must be positive")
+        unknown = set(features) - set(DATASET_FEATURES)
+        if unknown:
+            raise ValueError(f"Unknown dataset features {sorted(unknown)}")
+        self.features = tuple(features)
+        self.pe_dim = pe_dim
         self.ids = list(splits[split] if sample_ids is None else sample_ids)
         if not set(self.ids).issubset(splits[split]):
             raise ValueError("Sample selection contains IDs outside the split")
@@ -78,9 +113,13 @@ class MFCADDataset(Dataset):
                                   dtype=torch.long)
             if labels.numel() == 0 or labels.min() < 0 or labels.max() >= NUM_CLASSES:
                 raise ValueError(f"{sample['id']}: invalid face labels")
-            face_uv, _ = normalize_uv(face_uv, edge_uv)
-            graph = adjacency_graph(raw)
+            face_uv, edge_uv = normalize_uv(face_uv, edge_uv)
+            graph = adjacency_graph(raw, edge_uv if "edge" in self.features else None)
             graph.ndata["x"], graph.ndata["y"] = face_uv, labels
+            if "gdv" in self.features:
+                graph.ndata["gdv"] = graphlet_degree_vectors(graph)
+            if "pe" in self.features:
+                graph.ndata["pe"] = laplacian_positional_encoding(graph, self.pe_dim)
             self.cache[index] = {"id": sample["id"], "graph": graph}
         return self.cache[index]
 

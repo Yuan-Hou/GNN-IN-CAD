@@ -7,20 +7,19 @@ from pathlib import Path
 
 from dgl.data.utils import load_graphs
 
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DATA_DIR = PROJECT_ROOT / "data" / "MFCADDataset"
 
 
 def _load_splits(data_dir: Path = DATA_DIR) -> dict[str, list[str]]:
     """Load the official train, validation, and test sample IDs."""
-    split_path = data_dir / "split.json"
-    with split_path.open() as file:
+    with (Path(data_dir) / "split.json").open() as file:
         return json.load(file)
 
 
 def _load_sample(sample_id: str, data_dir: Path = DATA_DIR) -> dict:
     """Load one DGL graph and its aligned per-face annotations."""
+    data_dir = Path(data_dir)
     graph_path = data_dir / "graph" / f"{sample_id}.bin"
     label_path = data_dir / "labels" / f"{sample_id}_ids.json"
     if not graph_path.is_file() or not label_path.is_file():
