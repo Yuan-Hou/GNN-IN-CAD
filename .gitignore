@@ -1,6 +1,7 @@
 __pycache__/
 data/MFCADDataset/
 data/feature_cache/
+results/
 
 # Generated model checkpoints, weights and prediction tensors.
 *.pt

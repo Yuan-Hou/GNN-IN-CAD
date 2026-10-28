@@ -130,6 +130,32 @@ including parallel B-rep edges. Results are `results/anisotropic_static_joint_ru
 etc. Comparisons include baseline + anisotropic only. Epoch checkpoints,
 RNG resume, loss/accuracy logging and final prediction export are retained.
 
+`notebooks/result_analysis.ipynb` consolidates validation-only results along
+the project-plan ladder: geometry, frozen shallow alternatives (Laplacian,
+WL T=3, graphlets up to 4), frozen/joint 2-hop Chebyshev GCN, and joint
+static/updated edge-gated models. It validates cached solid/face identities,
+shows overall accuracy and mean IoU, per-class IoU/recall tables, and tracks
+the five hardest classes by lowest baseline validation IoU. Executing it
+requires no training or inference; outputs go to `results/result_analysis/`.
+
+### Prediction row identity
+
+All six model notebooks export the same prediction index alongside logits-derived
+softmax probabilities, labels, predictions and metrics. For prediction row `row`:
+
+```python
+sample_id = results["sample_ids"][results["sample_indices"][row].item()]
+face_index = results["face_indices"][row].item()  # zero-based graph/annotation index
+```
+
+`sample_offsets` stores the start/end range for each solid; `split` identifies
+train or validation. Evaluation validates the label sequence against those
+solids and rejects shuffled DataLoaders. STEP viewer face IDs require a separate
+verified mapping. Older final caches can be indexed without inference using
+`python scripts/index_final_predictions.py`; it backs up old files, validates
+alignment and preserves numerical results. Baseline checkpoint hashes remain
+unchanged, so existing frozen features and resumable checkpoints stay valid.
+
 ### Load MFCAD in a notebook
 
 The editable project installation makes the loader available to notebooks without modifying `sys.path`:

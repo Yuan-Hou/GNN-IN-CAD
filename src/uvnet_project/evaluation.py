@@ -6,7 +6,8 @@ import torch
 from torch import nn
 
 
-def evaluate(model, evaluation_set, output_path=None, device=None):
+def evaluate(model, evaluation_set, output_path=None, device=None, *,
+             sample_ids=None, split=None, data_dir=None):
     """Evaluate a model, optionally saving results with ``torch.save``.
 
     ``evaluation_set`` yields (inputs, labels) batches. Inputs must support
@@ -21,9 +22,16 @@ def evaluate(model, evaluation_set, output_path=None, device=None):
     Use a non-shuffled loader when matching rows back to source faces.
     Pass ``output_path`` to save the dictionary; None performs no file writes.
     The model is already on ``device``; inputs and labels are moved there.
+    Provide ordered ``sample_ids`` and ``split`` to attach an explicit
+    solid/face index, validated against dataset annotation labels. This
+    requires a non-shuffled evaluation loader in the supplied sample order.
     """
     if device is None:
         device = next(model.parameters(), torch.empty(0)).device
+    if sample_ids is not None:
+        from torch.utils.data import DataLoader, SequentialSampler
+        if isinstance(evaluation_set, DataLoader) and not isinstance(evaluation_set.sampler, SequentialSampler):
+            raise ValueError("Indexed prediction export requires a sequential evaluation loader.")
 
     loss_fn = nn.CrossEntropyLoss(reduction="sum")
     total_loss = 0.0
@@ -78,6 +86,9 @@ def evaluate(model, evaluation_set, output_path=None, device=None):
         "labels": labels,
         "predictions": predictions,
     }
+    if sample_ids is not None:
+        from .prediction_index import attach_prediction_index
+        results = attach_prediction_index(results, sample_ids, split, data_dir)
     if output_path is not None:
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
