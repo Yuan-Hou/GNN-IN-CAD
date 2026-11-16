@@ -1,0 +1,18 @@
+[
+  "stock",
+  "rectangular_pocket",
+  "triangular_pocket",
+  "6sides_pocket",
+  "rectangular_passage",
+  "triangular_passage",
+  "6sides_passage",
+  "rectangular_blind_slot",
+  "rectangular_through_slot",
+  "triangular_through_slot",
+  "rectangular_through_step",
+  "2sides_through_step",
+  "slanted_through_step",
+  "rectangular_blind_step",
+  "triangular_blind_step",
+  "chamfer"
+]

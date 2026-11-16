@@ -16,3 +16,13 @@ results/
 results/
 dist/
 notebook_backups/
+
+# Extracted report dataset; keep the bundled ZIP.
+/report/data/MFCADDataset/
+
+# Submission model caches are tracked; large binaries use Git LFS.
+!/report/data/model_runs/**/*.pt
+!/report/data/model_runs/**/*.pth
+
+/report/data/feature_cache/
+

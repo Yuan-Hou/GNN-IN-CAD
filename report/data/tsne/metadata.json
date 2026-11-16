@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "origin": "Exact draft t-SNE coordinates imported after verifying face rows, numeric labels, union-error membership and per-model correctness against current report caches. Reviewed names are applied when plotting.",
+  "parameters": {
+    "pca_components": 50,
+    "perplexity": 30,
+    "init": "pca",
+    "learning_rate": "auto",
+    "n_iter": 1000,
+    "method": "barnes_hut",
+    "angle": 0.5,
+    "random_state": 0
+  },
+  "dependencies": {
+    "data/label_mapping.json": "d35ead0585ac58a16ab5b1faac39d638ba1cd5fb06c0544c95e4a836e0491e36",
+    "data/validation_index/labels.npy": "9a85c1bb6e56fa44dd498a161c1415f823cb72d126d6b96cd47d46bc2a19488a",
+    "data/validation_index/sample_ids.json": "bb876fe838c19a65410e8a22333661ae6f061348f87716985b8badd29b4a3d5f",
+    "data/validation_index/sample_offsets.npy": "bd0059f65526912c517af5b80e0dcfe0be8f4c982a73b9f54cf5d6070ede024b",
+    "data/model_runs/baseline/result.json": "c41c367abf3e7d566ab2bfa2581255fe04e4060e27df32de95c5fcda8df6e0da",
+    "data/model_runs/cheb2_joint/result.json": "41956a8b09c118acad47987eb410c9ea95ad22893ccaa62ce4986c1b388a339f",
+    "data/model_runs/edge_updated/result.json": "8b72121e8a3ff0a89ab9cb68b9e2e11a8f291da995ab78384dde67b78ebb94ca",
+    "data/model_runs/graphlet4_frozen/result.json": "319622c28074f88cb702ceccd72966fddd051be08cc8fa6237996243c27b2903",
+    "data/model_runs/laplacian_frozen/result.json": "2422242e8aabe830398f8903b15f62cadea1f94d0d1cd28955da1d18c90b5c01",
+    "data/model_runs/wl3_frozen/result.json": "6bbf8c435edfd5fc954aa995bf6d3681d6599bf3629613e252051a4df31ea50b",
+    "scripts/model_components.py": "e87f8273eefaed6129127740c98e3895a7977885b3ad195f66083e7f3a2ebcce",
+    "scripts/model_utils.py": "bf14536a45845bfb636f3b95d8dc49c281fbf45772579b0c1305d1c62b1c231a",
+    "data/class_order.json": "3bfc49fb350157d730dd05d0e87935973362e0225960dafcc0f7ff387b6f84a5"
+  },
+  "coordinate_sha256": "32bc74593561476c4024ec4fba333cc174748c1c3d7759d2e3c3caaf4a941ffa",
+  "source_csv_sha256": {
+    "embedding_tsne_coordinates.csv": "60ac18f75f93f9bf5606ec301b068645eaf982a9e433ad0a0de2e8dd575a80eb",
+    "shallow_full_concat_tsne_coordinates.csv": "0971506bc3a00d3e75d0cafc4888402234de9d6146b2f35344d6f4052563c645",
+    "shallow_first_layer_tsne_coordinates.csv": "4953c79d2dc076279c18f142025c40feb582dedc6435e9935fd4f9001e85f520"
+  },
+  "sklearn_version": "1.3.2",
+  "selected_faces": 36714,
+  "union_errors": 7533,
+  "largest_class_errors": 1298,
+  "pca": []
+}

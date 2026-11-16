@@ -1,0 +1,38 @@
+{
+  "origin": "Existing wl3_frozen_run_01; copied without retraining or inference.",
+  "final_epoch": 20,
+  "class_names": {
+    "0": "chamfer",
+    "1": "triangular_passage",
+    "2": "rectangular_passage",
+    "3": "6sides_passage",
+    "4": "triangular_through_slot",
+    "5": "rectangular_through_slot",
+    "6": "rectangular_through_step",
+    "7": "2sides_through_step",
+    "8": "slanted_through_step",
+    "9": "triangular_pocket",
+    "10": "rectangular_pocket",
+    "11": "6sides_pocket",
+    "12": "rectangular_blind_slot",
+    "13": "triangular_blind_step",
+    "14": "rectangular_blind_step",
+    "15": "stock"
+  },
+  "files": {
+    "summary.csv": "97ab63affb60859ba67cbd4c8e000b6e6380dda14b8f6c366de8b8b8d79a393e",
+    "batch_loss.csv": "333e5af749ced7ebe92becbb74a041de9b4c47dfe86405616cd7424ea895f75f",
+    "history.csv": "a4df2d66cadc88d9b7bbbb4e89690b0534167ba5dbc95d61da16832f4b19be01",
+    "loss.png": "bb3f839fa279db39975cb66d569c10af9ff7e1b45a9dd49d7df5cc4209085c9a",
+    "per_class_metrics.csv": "92fe8fde8bb142066dcd70a550b5dc3581b44cd61e5a7e392c00ccc0da09c987",
+    "epoch_020/validation_probabilities.npy": "82519c7cba4a80503fe14add166c95fe377ead677aa38f4e86ebb63a8d103f43",
+    "epoch_020/train_metrics.json": "3e83c906a69067515ea7a9a4d0b787ded0eb874d26ea74259582703b64cb53ed",
+    "epoch_020/validation_metrics.json": "dc95ecbed7cf3ca2ddae31c1e504d95885a7389efc52dc31c8f216a31d773004",
+    "epoch_020/geometry.npy": "5af444c6d4ef0eb0cd3fdedf39a6a7c5861677bef2321211f188fbd22823d997",
+    "epoch_020/wl_tokens.npy": "564d84714925364351da57cd9dcba52262210cad8dbb79bc7019866fc5d0262a",
+    "epoch_020/first_layer_relu.npy": "e7585e0964bbbbb8a6c7fa19094d7859ff0ca4c9eb3af541a068f3574427686e",
+    "epoch_020/embedding_metadata.json": "aea917cc3b306abb96d1a1d09f8f65f1e17807b97aef73b345e6a42da40042d0"
+  },
+  "cached": true,
+  "checkpoint_contents": "WL weights replaced by indexed validation full-input and first-layer embeddings; probabilities and training summaries retained."
+}

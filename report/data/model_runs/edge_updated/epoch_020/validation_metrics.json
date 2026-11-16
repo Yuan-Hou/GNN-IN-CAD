@@ -1,0 +1,6 @@
+{
+  "loss": 0.0008178937191021807,
+  "split": "validation",
+  "index": "data/validation_index",
+  "faces": 70255
+}

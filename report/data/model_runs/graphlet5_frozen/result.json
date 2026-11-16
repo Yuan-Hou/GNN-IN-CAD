@@ -1,0 +1,32 @@
+{
+  "origin": "Existing graphlet5_frozen_run_01; copied without retraining or inference.",
+  "final_epoch": 20,
+  "class_names": {
+    "0": "chamfer",
+    "1": "triangular_passage",
+    "2": "rectangular_passage",
+    "3": "6sides_passage",
+    "4": "triangular_through_slot",
+    "5": "rectangular_through_slot",
+    "6": "rectangular_through_step",
+    "7": "2sides_through_step",
+    "8": "slanted_through_step",
+    "9": "triangular_pocket",
+    "10": "rectangular_pocket",
+    "11": "6sides_pocket",
+    "12": "rectangular_blind_slot",
+    "13": "triangular_blind_step",
+    "14": "rectangular_blind_step",
+    "15": "stock"
+  },
+  "files": {
+    "batch_loss.csv": "80ffcfd80d3a8a82d90c7c3b8ede1fc0296a80955704cd35df7a078c017cf72d",
+    "history.csv": "a4de4e2da3be72e07305f2f145c00d0b9f5244a3222e4eae689d6fa0fc5b5a67",
+    "loss.png": "0257a445fd496df6fb65fd67435d8f150fb4f758e726a1e5af4cdaa15e42f3a2",
+    "epoch_020/validation_probabilities.npy": "4e7d2f3e1f4458212c8c1fc334501783915634fe9055f934753f44d003a93625",
+    "epoch_020/train_metrics.json": "43f560f8e69c0b27fed651715429c99d58f3147a7eacb8bd3bddad5796e35315",
+    "epoch_020/validation_metrics.json": "43902b8ea723256e249f0c05fc4261c49eb76c12657726da0fe00854288a8584",
+    "epoch_020/checkpoint.pt": "04b0131591bef64a9e0c6509c5e3a8416056313f7e191e3be2bae5b827f0ed13"
+  },
+  "cached": true
+}

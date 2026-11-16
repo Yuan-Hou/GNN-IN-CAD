@@ -1,0 +1,35 @@
+{
+  "origin": "Existing graphlet4_frozen_run_01; copied without retraining or inference.",
+  "final_epoch": 20,
+  "class_names": {
+    "0": "chamfer",
+    "1": "triangular_passage",
+    "2": "rectangular_passage",
+    "3": "6sides_passage",
+    "4": "triangular_through_slot",
+    "5": "rectangular_through_slot",
+    "6": "rectangular_through_step",
+    "7": "2sides_through_step",
+    "8": "slanted_through_step",
+    "9": "triangular_pocket",
+    "10": "rectangular_pocket",
+    "11": "6sides_pocket",
+    "12": "rectangular_blind_slot",
+    "13": "triangular_blind_step",
+    "14": "rectangular_blind_step",
+    "15": "stock"
+  },
+  "files": {
+    "summary.csv": "b1efcf35a448bc3c38b18af7badf6e6e28f310279f9ccd1f257f536cfc87db47",
+    "batch_loss.csv": "b27b7de196a4199ae282b93d9b5fa4bc3b8c28954b046974322039eac30f6698",
+    "history.csv": "dbd2ee4e64e4171f9efe1c543a1419f31ba125327828f7d08e3fb45afbbd09da",
+    "loss.png": "f1879a085fa08a3ce4a52fbc97f0db44be7e18f8d0b5a878c6fa6dc8d00170a8",
+    "per_class_metrics.csv": "fb45a7a73782b243fbf704c01a4f37b31fb37baade8f3b381da15de2e6500504",
+    "epoch_020/validation_probabilities.npy": "4f5fa3645d6bc003dbd709e7a262dc69d648c9e1796269263028bcbe4597b8bd",
+    "epoch_020/train_metrics.json": "e5438e95a4cfa61f474159eba8db6c66361877d766504cdd372d70c8d8f92319",
+    "epoch_020/validation_metrics.json": "29a29d8cc0a9fd34383f4d2c6ed4af4c165b767eb1327dfa60340d7f2b120e85",
+    "epoch_020/checkpoint.pt": "f69b2f0a149b5cd7d42dec06d25629a55eae6933d7950c6047f02b2a4028a784"
+  },
+  "cached": true,
+  "checkpoint_contents": "Final weights, history, configuration and model metadata; optimizer, scaler and RNG state removed."
+}

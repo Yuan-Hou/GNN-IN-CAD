@@ -1,0 +1,36 @@
+{
+  "origin": "Existing wl4_frozen_run_01; copied without retraining or inference.",
+  "final_epoch": 20,
+  "class_names": {
+    "0": "chamfer",
+    "1": "triangular_passage",
+    "2": "rectangular_passage",
+    "3": "6sides_passage",
+    "4": "triangular_through_slot",
+    "5": "rectangular_through_slot",
+    "6": "rectangular_through_step",
+    "7": "2sides_through_step",
+    "8": "slanted_through_step",
+    "9": "triangular_pocket",
+    "10": "rectangular_pocket",
+    "11": "6sides_pocket",
+    "12": "rectangular_blind_slot",
+    "13": "triangular_blind_step",
+    "14": "rectangular_blind_step",
+    "15": "stock"
+  },
+  "files": {
+    "batch_loss.csv": "1599d6e0be61266c5ec03ed0cd13b0af0d2831d269e2c2293925c405f1ab570e",
+    "history.csv": "2547b9cfa1479c31ac78d5a8a986fd1b69d74eef3ad12cf6608da1acd585e0d4",
+    "loss.png": "1c9502dfc6381f7b93e93780d4fcb69bb0250bdce7509c1ee041a70361c5192b",
+    "epoch_020/validation_probabilities.npy": "823658fb76faee49991143b11b2b229656ee4a77099e9e5369994a7d7602d474",
+    "epoch_020/train_metrics.json": "671f041b4cac7f46a7167f4353cf90529300de3e470ade69a9cec8aeb0ca137f",
+    "epoch_020/validation_metrics.json": "90b2be73649b4f21bd76b0832da87620374a8f11adba295ff29d449e33079b96",
+    "epoch_020/geometry.npy": "5af444c6d4ef0eb0cd3fdedf39a6a7c5861677bef2321211f188fbd22823d997",
+    "epoch_020/wl_tokens.npy": "aa30f8d5bd36920f4076906a9f462919e86b1eba57eb8a34e75ac596ea6df112",
+    "epoch_020/first_layer_relu.npy": "d64432b4ed4185f648e75299e151d3a0ba59fefa1c484dcc215c220b6c3bc5ab",
+    "epoch_020/embedding_metadata.json": "06b6b69a797535f84e1bbfcb9157278bf455cb5803aa1fcc79a95a249fb40ea2"
+  },
+  "cached": true,
+  "checkpoint_contents": "WL weights replaced by indexed validation full-input and first-layer embeddings; probabilities and training summaries retained."
+}

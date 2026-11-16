@@ -1,0 +1,18 @@
+{
+  "rectangular_passage": "rectangular_passage",
+  "triangular_passage": "6sides_passage",
+  "6sides_passage": "triangular_through_slot",
+  "rectangular_pocket": "6sides_pocket",
+  "triangular_pocket": "rectangular_blind_slot",
+  "6sides_pocket": "triangular_blind_step",
+  "rectangular_blind_slot": "rectangular_pocket",
+  "rectangular_through_slot": "chamfer",
+  "rectangular_through_step": "rectangular_through_slot",
+  "2sides_through_step": "rectangular_through_step",
+  "slanted_through_step": "2sides_through_step",
+  "rectangular_blind_step": "slanted_through_step",
+  "triangular_blind_step": "triangular_pocket",
+  "chamfer": "rectangular_blind_step",
+  "triangular_through_slot": "triangular_passage",
+  "stock": "stock"
+}

@@ -1,0 +1,160 @@
+{
+  "scope": "Manual review of supplied labels; no relabelling applied. Verification is limited to inspected examples.",
+  "mappings": [
+    {
+      "supplied_label": "rectangular_passage",
+      "proposed_label": "rectangular_passage",
+      "status": "consistent_with_inspected_examples",
+      "evidence": "Inspected examples have passage walls with two pairs of opposing orthogonal normal directions; additional faces reflect repeated or split walls.",
+      "examples": [
+        "2-3-4-10-13-23_color",
+        "0-2-2-3-11-23_color"
+      ]
+    },
+    {
+      "supplied_label": "triangular_passage",
+      "proposed_label": "6sides_passage",
+      "status": "supported_by_inspected_examples",
+      "evidence": "One example has six labelled walls with three opposing normal pairs around a common through axis; the other has two groups of six with the same structure. This supports a six-sided passage rather than a triangular passage.",
+      "examples": [
+        "3-3-4-5-5-23_color",
+        "1-3-5-8-14-23_color"
+      ]
+    },
+    {
+      "supplied_label": "6sides_passage",
+      "proposed_label": "triangular_through_slot",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have two inclined walls meeting in a V-shaped profile, open at an exterior stock face, and extending across the full stock along a common axis (span 2). Consistent with a triangular through slot, rather than a closed six-sided passage.",
+      "examples": [
+        "3-3-4-5-5-23_color",
+        "2-3-4-10-13-23_color"
+      ]
+    },
+    {
+      "supplied_label": "rectangular_pocket",
+      "proposed_label": "6sides_pocket",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have six side walls forming three opposing normal pairs around a common depth axis, plus a perpendicular bottom face: seven labelled faces in each example. This supports a blind six-sided pocket.",
+      "examples": [
+        "5-11-12-14-19_color",
+        "3-4-5-9-11-23_color"
+      ]
+    },
+    {
+      "supplied_label": "triangular_pocket",
+      "proposed_label": "rectangular_blind_slot",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have four axis-aligned faces: two opposing side walls, a floor, and a blind end wall. The feature opens at an exterior stock boundary, consistent with a rectangular blind slot.",
+      "examples": [
+        "0-0-10-12-19_color",
+        "5-11-12-14-19_color"
+      ]
+    },
+    {
+      "supplied_label": "6sides_pocket",
+      "proposed_label": "triangular_blind_step",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have an inclined planar face and a perpendicular end face at a stock corner, consistent with a triangular blind step. User corrected the earlier provisional chamfer interpretation.",
+      "examples": [
+        "1-7-7-8-13-23_color",
+        "1-1-5-6-13-23_color"
+      ]
+    },
+    {
+      "supplied_label": "rectangular_blind_slot",
+      "proposed_label": "rectangular_pocket",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have five labelled faces: four enclosing side walls in two opposing orthogonal pairs, plus a perpendicular bottom. Their openings lie inside a stock face, consistent with rectangular blind pockets.",
+      "examples": [
+        "0-0-10-12-19_color",
+        "2-3-4-10-13-23_color"
+      ]
+    },
+    {
+      "supplied_label": "rectangular_through_slot",
+      "proposed_label": "chamfer",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Highlighted faces are single inclined edge strips, with normals having two equal-magnitude components (approximately 0.7071) and one zero component. Their bounding boxes span an original stock edge, consistent with 45-degree chamfers. First example contains two such faces; second contains one.",
+      "examples": [
+        "0-0-10-12-19_color",
+        "0-4-7-11-14-23_color"
+      ]
+    },
+    {
+      "supplied_label": "rectangular_through_step",
+      "proposed_label": "rectangular_through_slot",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both inspected examples show two opposing walls joined by a perpendicular floor, forming a U-shaped channel through the full stock width. Supports rectangular through slot. User confirmed the earlier suspected duplicate was confusion with a blind slot; KIV resolved.",
+      "examples": [
+        "3-3-4-5-5-23_color",
+        "1-1-5-6-13-23_color"
+      ]
+    },
+    {
+      "supplied_label": "2sides_through_step",
+      "proposed_label": "rectangular_through_step",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have two perpendicular axis-aligned faces forming an L-shaped step cross-section at a stock corner, each extending along Z from -1 to 1. Consistent with rectangular through steps.",
+      "examples": [
+        "1-1-5-6-13-23_color",
+        "0-0-6-9-13-23_color"
+      ]
+    },
+    {
+      "supplied_label": "slanted_through_step",
+      "proposed_label": "2sides_through_step",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Each inspected feature has three faces: one axis-aligned wall spanning the stock and two inclined faces meeting along a central ridge. First example has two such groups; second has one. This supports the two-sided through-step shape rather than a single slanted through-step face.",
+      "examples": [
+        "1-7-7-8-13-23_color",
+        "0-4-7-11-14-23_color"
+      ]
+    },
+    {
+      "supplied_label": "rectangular_blind_step",
+      "proposed_label": "slanted_through_step",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have one inclined planar face and one axis-aligned wall, each extending along X from -1 to 1. The full-width extent and sloped surface support slanted through steps rather than rectangular blind steps.",
+      "examples": [
+        "1-7-7-8-13-23_color",
+        "1-3-5-8-14-23_color"
+      ]
+    },
+    {
+      "supplied_label": "triangular_blind_step",
+      "proposed_label": "triangular_pocket",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Both examples have three enclosing side walls with normals in a common cross-sectional plane, plus a perpendicular bottom face. This supports a blind triangular pocket rather than an open triangular blind step.",
+      "examples": [
+        "3-4-5-9-11-23_color",
+        "0-0-6-9-13-23_color"
+      ]
+    },
+    {
+      "supplied_label": "chamfer",
+      "proposed_label": "rectangular_blind_step",
+      "status": "supported_by_inspected_examples",
+      "evidence": "Previously inspected both examples: each has three mutually perpendicular labelled faces forming a corner recess, with two open sides at the stock boundary. This supports a rectangular blind step rather than an inclined chamfer strip. Normals independently checked against sampled XYZ geometry.",
+      "examples": [
+        "1-3-5-8-14-23_color",
+        "5-11-12-14-19_color"
+      ]
+    },
+    {
+      "supplied_label": "triangular_through_slot",
+      "proposed_label": "triangular_passage",
+      "status": "supported_by_inspected_examples",
+      "evidence": "First example has three enclosing side walls spanning X from -1 to 1; second has two groups of three enclosing walls spanning Z from -1 to 1. Supports triangular passages rather than open V-shaped through slots.",
+      "examples": [
+        "1-7-7-8-13-23_color",
+        "1-1-5-6-13-23_color"
+      ]
+    }
+  ],
+  "coverage": {
+    "unreviewed_supplied_labels": [],
+    "unassigned_corrected_labels": [],
+    "duplicate_corrected_labels": {}
+  }
+}

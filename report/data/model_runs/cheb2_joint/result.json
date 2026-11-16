@@ -1,0 +1,33 @@
+{
+  "origin": "Existing cheb2_joint_run_01; copied without training or inference.",
+  "final_epoch": 20,
+  "class_names": {
+    "0": "chamfer",
+    "1": "triangular_passage",
+    "2": "rectangular_passage",
+    "3": "6sides_passage",
+    "4": "triangular_through_slot",
+    "5": "rectangular_through_slot",
+    "6": "rectangular_through_step",
+    "7": "2sides_through_step",
+    "8": "slanted_through_step",
+    "9": "triangular_pocket",
+    "10": "rectangular_pocket",
+    "11": "6sides_pocket",
+    "12": "rectangular_blind_slot",
+    "13": "triangular_blind_step",
+    "14": "rectangular_blind_step",
+    "15": "stock"
+  },
+  "files": {
+    "batch_loss.csv": "7348225720ab953b9e911701c971d68163b84541c2d745068015ff87fb58b7db",
+    "history.csv": "df76bd53330ec5f7a2dffd4def434236dad66ae2686831caf4d24c64bcc53ea9",
+    "loss.png": "b115ed9bec9800307424f25007e7f49ad2328254bf7f9451223bf596bad156d4",
+    "epoch_020/validation_probabilities.npy": "17417a435decd961df33d42afdff5877bdb3a88f43ee842a188af54296c8b00a",
+    "epoch_020/train_metrics.json": "7ea7ee6ea887911cf43163c61d2051b7f7ecd4df6315eb177502caac27cd6323",
+    "epoch_020/validation_metrics.json": "5fdf1792426f244b55a446835c263425b61e91ba8b7b1b9e0c8e031b2af9e773",
+    "epoch_020/checkpoint.pt": "2bb28cde5466c25c0af44e3765907dd77d5c3e1b0be0ca7243b7c1e58d1092fa"
+  },
+  "cached": true,
+  "checkpoint_contents": "Final weights, history, configuration and model metadata; optimizer, scaler and RNG state removed."
+}
