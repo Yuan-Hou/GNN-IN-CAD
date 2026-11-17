@@ -344,3 +344,26 @@ def cache_wl_embeddings(model, validation_loader, final, config, history, vocabu
         'encoding': 'Disjoint-round sparse one-hot column IDs; unknowns contribute zero'}}
     (final / 'embedding_metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     (final / 'checkpoint.pt').unlink()
+
+
+def validation_class_counts(model_name):
+    """Recompute ordered per-class counts and IoU from a verified final cache."""
+    from data import ordered_class_indices
+    run = load_cached_run(model_name)
+    names = json.loads((run['root'] / 'result.json').read_text())['class_names']
+    saved = load_validation_predictions(run['root'] / f"epoch_{run['epoch']:03d}")
+    labels = saved['labels'].long()
+    probabilities = saved['probabilities']
+    classes = probabilities.shape[1]
+    confusion = torch.bincount(labels * classes + probabilities.argmax(1),
+                              minlength=classes**2).reshape(classes, classes)
+    true_positive = confusion.diag()
+    support, predicted = confusion.sum(1), confusion.sum(0)
+    false_negative, false_positive = support - true_positive, predicted - true_positive
+    union = support + predicted - true_positive
+    iou = true_positive.double() / union.double().masked_fill(union == 0, float('nan'))
+    order = ordered_class_indices(names)
+    return pd.DataFrame([dict(class_index=i, class_name=names[str(i)],
+        support=int(support[i]), true_positive=int(true_positive[i]),
+        false_positive=int(false_positive[i]), false_negative=int(false_negative[i]),
+        iou=float(iou[i])) for i in order])
