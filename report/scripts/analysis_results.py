@@ -245,9 +245,7 @@ def plot_uncertain_edge_face(face):
         scene=dict(aspectmode='data',dragmode='orbit',xaxis=dict(visible=False),
                    yaxis=dict(visible=False),zaxis=dict(visible=False),
                    camera=dict(eye=dict(zip(['x','y','z'],eye)))),
-        updatemenus=[dict(type='buttons',direction='right',x=0,y=1.04,
-            buttons=[dict(label='Transparent context',method='restyle',args=[{'opacity':.28},context]),
-                     dict(label='Solid context',method='restyle',args=[{'opacity':1.0},context])])])
+        updatemenus=[])
     figure.show(renderer='plotly_mimetype',config=dict(scrollZoom=True,displaylogo=False))
     return figure
 
