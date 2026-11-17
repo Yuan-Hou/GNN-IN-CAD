@@ -71,7 +71,13 @@ def global_distribution():
             shape = "Six-sided"
         else:
             shape = "Other / not specified"
-        extent = "Through" if "through" in words else "Blind" if "blind" in words else ""
+        # Infer the extent implicit in these MFCAD feature names.
+        if feature_type == "Pocket":
+            extent = "Blind"
+        elif feature_type == "Passage" or label == "chamfer":
+            extent = "Through"
+        else:
+            extent = "Through" if "through" in words else "Blind" if "blind" in words else ""
         if feature_type == "Step":
             feature_type = f"{extent} step"
         # Keep the entire original class name; wrap only for readability.
